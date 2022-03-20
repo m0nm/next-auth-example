@@ -3,7 +3,11 @@ import Head from "next/head";
 import styles from "../styles/Secret.module.css";
 import topSecret from "../public/top-secret.png";
 
+import { useSession } from "next-auth";
+
 function Secret() {
+  const { data: session } = useSession();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +17,7 @@ function Secret() {
       </Head>
 
       <Image src={topSecret} alt="" width="320" height="120" />
-      <h1>Hello mr Doe</h1>
+      <h1>Hello mr {session.user?.name}</h1>
       <p>You are authorized to see this page</p>
 
       <button>Sign Out</button>
@@ -22,3 +26,20 @@ function Secret() {
 }
 
 export default Secret;
+
+export const getServerSideProps = async (context) => {
+  // get the session
+  const session = await getSession(context);
+
+  // redirect the user if there is no session
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: {} };
+};
