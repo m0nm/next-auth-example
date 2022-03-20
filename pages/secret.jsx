@@ -3,11 +3,9 @@ import Head from "next/head";
 import styles from "../styles/Secret.module.css";
 import topSecret from "../public/top-secret.png";
 
-import { useSession } from "next-auth";
+import { getSession, signOut } from "next-auth/react";
 
-function Secret() {
-  const { data: session } = useSession();
-
+function Secret({ session }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -20,7 +18,7 @@ function Secret() {
       <h1>Hello mr {session.user?.name}</h1>
       <p>You are authorized to see this page</p>
 
-      <button>Sign Out</button>
+      <button onClick={() => signOut()}>Sign Out</button>
     </div>
   );
 }
@@ -41,5 +39,6 @@ export const getServerSideProps = async (context) => {
     };
   }
 
-  return { props: {} };
+  // passing the session object to the page
+  return { props: { session } };
 };

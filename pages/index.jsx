@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 import googleSvg from "../public/google.svg";
 import githubSvg from "../public/github.svg";
 
-import { signIn } from "next-auth";
+import { signIn } from "next-auth/react";
 
 export default function Home() {
   const handleSignIn = (provider) => {
